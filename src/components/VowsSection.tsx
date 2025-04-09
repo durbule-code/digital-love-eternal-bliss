@@ -1,8 +1,15 @@
 
-import React, { useRef, useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
+import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/hooks/useTheme';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
+} from '@/components/ui/carousel';
 
 interface Vow {
   title: string;
@@ -29,28 +36,24 @@ const vows: Vow[] = [
   {
     title: "My Promise of Forever",
     content: "I vow that my love for you is not fleeting or conditional. It's a forever kind of love that will weather any storm and celebrate every joy. You have my heart, completely and eternally."
+  },
+  {
+    title: "My Promise of Patience",
+    content: "I vow to be patient with you, with us, and with myself. To understand that love grows in its own time and that we each have our own journey of growth."
+  },
+  {
+    title: "My Promise of Joy",
+    content: "I vow to bring laughter and light into your life. To dance with you in kitchens, to sing with you in cars, and to find wonder in everyday moments together."
+  },
+  {
+    title: "My Promise of Presence",
+    content: "I vow to be fully present with you. To listen with my whole heart, to see you truly, and to cherish every moment we share together."
   }
 ];
 
 const VowsSection: React.FC = () => {
   const { isDark } = useTheme();
-  const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-
-  const goToNext = () => {
-    setActiveIndex((prev) => (prev === vows.length - 1 ? 0 : prev + 1));
-  };
-
-  const goToPrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? vows.length - 1 : prev - 1));
-  };
-
-  useEffect(() => {
-    if (cardsRef.current) {
-      cardsRef.current.style.transform = `translateX(-${activeIndex * 100}%)`;
-    }
-  }, [activeIndex]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -87,101 +90,87 @@ const VowsSection: React.FC = () => {
           My Vows to You
         </h2>
 
-        <div className="relative overflow-hidden">
-          <div
-            ref={cardsRef}
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ width: `${vows.length * 100}%` }}
-          >
+        <Carousel className="w-full max-w-4xl mx-auto">
+          <CarouselContent>
             {vows.map((vow, index) => (
-              <div
-                key={index}
-                className="w-full px-4 flex-shrink-0"
-                style={{ width: `${100 / vows.length}%` }}
-              >
-                <div 
-                  className={cn(
-                    "h-full rounded-xl p-8 md:p-12 text-center flex flex-col items-center justify-center shadow-xl",
-                    isDark 
-                      ? "bg-secondary/30 border border-love-500/20 shadow-love-900/20" 
-                      : "bg-white border border-love-200 shadow-love-300/50"
-                  )}
-                >
-                  <Heart 
+              <CarouselItem key={index}>
+                <div className="p-2">
+                  <div 
                     className={cn(
-                      "mb-6", 
-                      isDark ? "text-love-400" : "text-love-500"
-                    )} 
-                    size={32} 
-                    fill="currentColor" 
-                  />
-                  
-                  <h3 className="text-2xl md:text-3xl font-dancing mb-6">
-                    {vow.title}
-                  </h3>
-                  
-                  <p className="text-lg md:text-xl font-playfair italic mb-6">
-                    {vow.content}
-                  </p>
-                  
-                  <div className="mt-auto pt-6">
-                    <button 
+                      "h-full rounded-xl p-8 md:p-12 text-center flex flex-col items-center justify-center shadow-xl",
+                      isDark 
+                        ? "bg-secondary/30 border border-love-500/20 shadow-love-900/20" 
+                        : "bg-white border border-love-200 shadow-love-300/50"
+                    )}
+                  >
+                    <Heart 
                       className={cn(
-                        "px-6 py-2 rounded-full transition-all duration-300",
-                        isDark 
-                          ? "bg-love-500/20 hover:bg-love-500/30 text-love-300" 
-                          : "bg-love-100 hover:bg-love-200 text-love-600"
-                      )}
-                      onClick={() => {
-                        // Trigger the "I love you too" animation here
-                        alert("I love you too!");
-                      }}
-                    >
-                      <span className="font-dancing text-lg">I love you too</span>
-                    </button>
+                        "mb-6", 
+                        isDark ? "text-love-400" : "text-love-500"
+                      )} 
+                      size={32} 
+                      fill="currentColor" 
+                    />
+                    
+                    <h3 className="text-2xl md:text-3xl font-dancing mb-6">
+                      {vow.title}
+                    </h3>
+                    
+                    <p className="text-lg md:text-xl font-playfair italic mb-6">
+                      {vow.content}
+                    </p>
+                    
+                    <div className="mt-auto pt-6">
+                      <button 
+                        className={cn(
+                          "px-6 py-2 rounded-full transition-all duration-300",
+                          isDark 
+                            ? "bg-love-500/20 hover:bg-love-500/30 text-love-300" 
+                            : "bg-love-100 hover:bg-love-200 text-love-600"
+                        )}
+                        onClick={() => {
+                          // Trigger the "I love you too" animation here
+                          alert("I love you too!");
+                        }}
+                      >
+                        <span className="font-dancing text-lg">I love you too</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </CarouselItem>
             ))}
+          </CarouselContent>
+          
+          <div className="flex items-center justify-center mt-8">
+            <CarouselPrevious className={cn(
+              "-left-4 md:-left-12 bg-background/50 hover:bg-background/80 border-0",
+              isDark ? "text-love-300" : "text-love-500"
+            )} />
+            <CarouselNext className={cn(
+              "-right-4 md:-right-12 bg-background/50 hover:bg-background/80 border-0",
+              isDark ? "text-love-300" : "text-love-500"
+            )} />
           </div>
-
-          <button
-            onClick={goToPrev}
-            className={cn(
-              "absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full shadow-md",
-              isDark 
-                ? "bg-background/70 text-love-400 hover:bg-background" 
-                : "bg-white/90 text-love-500 hover:bg-white"
-            )}
-            aria-label="Previous vow"
-          >
-            <ChevronLeft size={24} />
-          </button>
-
-          <button
-            onClick={goToNext}
-            className={cn(
-              "absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full shadow-md",
-              isDark 
-                ? "bg-background/70 text-love-400 hover:bg-background" 
-                : "bg-white/90 text-love-500 hover:bg-white"
-            )}
-            aria-label="Next vow"
-          >
-            <ChevronRight size={24} />
-          </button>
-        </div>
+        </Carousel>
 
         <div className="flex justify-center mt-8">
           {vows.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => setActiveIndex(idx)}
+              onClick={() => {
+                const items = document.querySelectorAll('.embla__slide');
+                if (items && items[idx]) {
+                  (items[idx] as HTMLElement).scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center' 
+                  });
+                }
+              }}
               className={cn(
                 "w-2 h-2 mx-1 rounded-full transition-all duration-300",
-                activeIndex === idx 
-                  ? isDark ? "bg-love-400 w-4" : "bg-love-500 w-4" 
-                  : isDark ? "bg-love-400/30" : "bg-love-200"
+                isDark ? "bg-love-400/30 hover:bg-love-400/70" : "bg-love-200 hover:bg-love-300"
               )}
               aria-label={`Go to vow ${idx + 1}`}
             />
