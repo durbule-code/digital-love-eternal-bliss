@@ -44,22 +44,21 @@ const LetterSection: React.FC = () => {
         </h2>
 
         <div className="max-w-2xl mx-auto">
-          <div
-            className={cn(
-              "relative mx-auto w-full max-w-md perspective transition-all duration-1000",
-              isOpen ? "transform-style-3d" : ""
-            )}
-          >
+          <div className="relative mx-auto w-full max-w-md" style={{ perspective: '1000px' }}>
             {/* Envelope - Front */}
             <div
               className={cn(
-                "relative z-20 flex flex-col items-center justify-center p-8 rounded-xl shadow-xl transition-all duration-1000 transform-style-3d",
-                isOpen ? "rotate-x-180 pointer-events-none" : "cursor-pointer",
+                "relative z-20 flex flex-col items-center justify-center p-8 rounded-xl shadow-xl transition-all duration-1000",
+                isOpen ? "opacity-0 pointer-events-none" : "cursor-pointer",
                 isDark 
                   ? "bg-secondary border-2 border-gold shadow-love-900/20" 
                   : "bg-love-50 border-2 border-love-300/70 shadow-love-300/50"
               )}
-              onClick={() => !isOpen && setIsOpen(true)}
+              onClick={() => setIsOpen(true)}
+              style={{ 
+                transformStyle: 'preserve-3d',
+                transform: isOpen ? 'rotateX(180deg)' : 'rotateX(0deg)'
+              }}
             >
               <div className="w-16 h-16 mb-4">
                 <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -122,12 +121,18 @@ const LetterSection: React.FC = () => {
             {/* Letter */}
             <div
               className={cn(
-                "absolute inset-0 z-10 p-6 rounded-xl shadow-xl overflow-y-auto max-h-[500px] transform-style-3d backface-visibility-hidden transition-all duration-1000",
-                isOpen ? "rotate-x-0" : "rotate-x-180",
+                "absolute inset-0 z-10 p-6 rounded-xl shadow-xl overflow-y-auto max-h-[500px]",
+                isOpen ? "opacity-100" : "opacity-0 pointer-events-none",
                 isDark 
                   ? "bg-secondary border border-gold/30" 
                   : "bg-love-50 border border-love-200"
               )}
+              style={{ 
+                transformStyle: 'preserve-3d',
+                backfaceVisibility: 'hidden',
+                transition: 'all 1s ease',
+                transform: isOpen ? 'rotateX(0deg)' : 'rotateX(-180deg)'
+              }}
             >
               <button
                 onClick={() => setIsOpen(false)}

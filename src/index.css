@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
@@ -112,6 +111,18 @@
     transform-style: preserve-3d;
   }
 
+  .backface-visibility-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-x-180 {
+    transform: rotateX(180deg);
+  }
+
+  .rotate-x-0 {
+    transform: rotateX(0deg);
+  }
+
   .falling-petal {
     @apply fixed pointer-events-none opacity-0;
     animation: fall-petal var(--fall-duration, 10s) linear forwards;
@@ -220,4 +231,16 @@
   border-radius: 50%;
   animation: pulse 2s infinite;
   animation-delay: calc(var(--star-delay) * 1s);
+}
+
+/* Animation for letter opening */
+@keyframes fall-petal {
+  0% {
+    opacity: 0.8;
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(360deg);
+  }
 }

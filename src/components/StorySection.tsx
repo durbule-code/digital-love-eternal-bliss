@@ -79,7 +79,7 @@ const StorySection: React.FC = () => {
           Our Story
         </h2>
 
-        <div className="relative ml-4 md:ml-0">
+        <div className="relative md:ml-0">
           {storyTimeline.map((event, index) => (
             <div
               key={index}
